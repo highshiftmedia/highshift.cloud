@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/social_oauth_backend
+      - PORT=3000
+      - BASE_URL=http://localhost:3000
+      # Add other secrets here or use .env file
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    restart: always
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017" # Optional: only if you want to access mongo from host
+    restart: always
+
+volumes:
+  mongo_data:
